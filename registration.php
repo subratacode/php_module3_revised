@@ -46,7 +46,7 @@ if (isset($_POST['signup'])) {
 
     if (!$error) {
         if (mysqli_query($conn, "INSERT INTO users(`name`, `email`, `mobile`, `password`) VALUES('" . $name . "', '" . $email . "', '" . $mobile . "', '" . $password . "')")) {
-            header("location: login.php");
+            // header("location: login.php");
             exit();
         } else {
             echo "Error: " . $sql . "" . mysqli_error($conn);
@@ -61,7 +61,8 @@ if (isset($_POST['signup'])) {
 <head>
     <meta charset="UTF-8">
     <title>Simple Registration Form in PHP with Validation</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
 
 <body style="background-image: url('images/background.jpg');">
@@ -95,15 +96,19 @@ if (isset($_POST['signup'])) {
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" id="password" name="password" class="form-control" value="" maxlength="8" required="">
-                                <input type="checkbox" id="showPass"> Show Password<br>
-                                <span class="text-danger"><?php if (isset($password_error)) echo $password_error; ?></span>
+                                <div class="input-group">
+                                    <input type="password" id="password" name="password" class="form-control" value="" maxlength="8" required="">
+                                    <button id="showPassword" class="btn btn-outline-secondary" type="button"><i class="fa fa-key" aria-hidden="true"></i></button>
+                                </div>
+                                <span class="text-danger"><?php if (isset($password_error_msg)) echo $password_error_msg; ?></span>
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
-                                <input type="password" id="cpassword" name="cpassword" class="form-control" value="" maxlength="8" required="">
-                                <input type="checkbox" id="showPass2"> Show Confirm Password<br>
-                                <span class="text-danger"><?php if (isset($cpassword_error)) echo $cpassword_error; ?></span>
+                                <div class="input-group">
+                                    <input type="password" id="cpassword2" name="cpassword" class="form-control" value="" maxlength="8" required="">
+                                    <button id="showPassword2" class="btn btn-outline-secondary" type="button"><i class="fa fa-key" aria-hidden="true"></i></button>
+                                </div>
+                                <span class="text-danger"><?php if (isset($cpassword_error_msg)) echo $cpassword_error_msg; ?></span>
                             </div>
                             <input type="submit" class="btn btn-primary my-3" name="signup" value="submit">
                             <hr>

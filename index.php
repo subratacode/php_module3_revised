@@ -21,7 +21,7 @@ if (isset($_POST['login'])) {
         $error = true;
     }
     $result = mysqli_query($conn, "SELECT * FROM users WHERE email = '" . $email . "' and password = '" . $password . "'");
-    if (!empty($result)) {
+    if (!$error && !empty($result)) {
         if ($row = mysqli_fetch_array($result)) {
             $_SESSION['user_id'] = $row['uid'];
             $_SESSION['user_name'] = $row['name'];
@@ -29,35 +29,38 @@ if (isset($_POST['login'])) {
             $_SESSION['user_mobile'] = $row['mobile'];
             header("Location: profile.php");
         }
+        else {
+            $error_msg = "Incorrect Email or Password!!!";
+        }
     } 
     else {
-        $error_message = "Incorrect Email or Password!!!";
+        $error_msg = "Incorrect Email or Password!!!";
     }
 
-    if(!$error && !empty($errors)) {
-        $sql = "INSERT INTO student_details(`name`,`phone`,`email`,`dob`,`address`,`zip`,`city`,`state`,`country`,`image`) VALUES ('$name','$phone','$email','$dob','$address','$zip','$city','$state','$country','$image')";
-        if (mysqli_query($dbCon, $sql)) {
-            echo "<h3>data stored in a database successfully."
-                . " Please browse your localhost php my admin"
-                . " to view the updated data</h3>";
-            echo nl2br("\n$name\n $phone\n "
-                . "$email\n $dob\n $address \n $zip\n $city\n $state \n$country \n$image");
-        }
-        else {
-            echo "ERROR: Hush! Sorry $sql. "
-                . mysqli_error($dbCon);
-        }
-        echo "Success";
-    }
-    else {
-        if(isset($dob_error_msg)) {
-            $_SESSION['dob_error_msg'] = $dob_error_msg;
-        }
-        if(isset($password_error_msg)) {
-            $_SESSION['password_error_msg'] = $password_error_msg;
-        }
-        // header('location:addStudent.php');
-    }
+    // if(!$error && !empty($errors)) {
+    //     $sql = "INSERT INTO student_details(`name`,`phone`,`email`,`dob`,`address`,`zip`,`city`,`state`,`country`,`image`) VALUES ('$name','$phone','$email','$dob','$address','$zip','$city','$state','$country','$image')";
+    //     if (mysqli_query($dbCon, $sql)) {
+    //         echo "<h3>data stored in a database successfully."
+    //             . " Please browse your localhost php my admin"
+    //             . " to view the updated data</h3>";
+    //         echo nl2br("\n$name\n $phone\n "
+    //             . "$email\n $dob\n $address \n $zip\n $city\n $state \n$country \n$image");
+    //     }
+    //     else {
+    //         echo "ERROR: Hush! Sorry $sql. "
+    //             . mysqli_error($dbCon);
+    //     }
+    //     echo "Success";
+    // }
+    // else {
+    //     if(isset($dob_error_msg)) {
+    //         $_SESSION['dob_error_msg'] = $dob_error_msg;
+    //     }
+    //     if(isset($password_error_msg)) {
+    //         $_SESSION['password_error_msg'] = $password_error_msg;
+    //     }
+    //     // header('location:addStudent.php');
+    // }
 }
 ?>
 <!DOCTYPE html>
@@ -100,6 +103,7 @@ if (isset($_POST['login'])) {
                             </div>
 
                             <input type="submit" class="btn btn-primary my-3" name="login" value="submit">
+                            <span class="text-danger fs-6"><?php if (isset($error_msg)) echo $error_msg; ?></span>
                             <hr>
                             <div class="text-center">
                                 <br> You don't have account?<a href="registration.php" class="m-3">Signup</a>
