@@ -90,13 +90,13 @@ if (isset($_POST['login'])) {
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <div class="form-group ">
                                 <label>Email</label>
-                                <input type="email" name="email" class="form-control" value="" maxlength="30" required="">
+                                <input type="email" name="email" class="form-control" value="" maxlength="30" required="" placeholder="enter email">
                                 <span class="text-danger"><?php if (isset($email_error_msg)) echo $email_error_msg; ?></span>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
                                 <div class="input-group">
-                                    <input type="password" id="password" name="password" class="form-control" value="" maxlength="8" required="">
+                                    <input type="password" id="password" name="password" class="form-control" value="" maxlength="8" required="" placeholder="enter password">
                                     <button id="showPassword" class="btn btn-outline-secondary" type="button"><i class="fa fa-key" aria-hidden="true"></i></button>
                                 </div>
                                 <span class="text-danger"><?php if (isset($password_error_msg)) echo $password_error_msg; ?></span>

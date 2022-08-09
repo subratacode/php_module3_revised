@@ -11,15 +11,15 @@ if (isset($_POST['signup'])) {
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
 
-    // echo $password;
+    echo $name." + ".$email." + ".$mobile." + ".$password." + ".$cpassword;
 
     if (!preg_match("/^[a-zA-Z ]+$/", $name)) {
-        $name_error = "Name must contain only alphabets and space";
+        $name_error_msg = "Name must contain only alphabets and space";
         $error = true;
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $email_error = "Please Enter Valid Email ID";
+        $email_error_msg = "Please Enter Valid Email ID";
         $error = true;
     }
     else {
@@ -27,29 +27,30 @@ if (isset($_POST['signup'])) {
     }
 
     if (!preg_match('/^(?=.*[!@#$%&])[0-9A-Za-z!@#$%&]{6,12}$/', $password)) {
-        $password_error = "Password must be minimum of 6 characters and atleast one special character";
+        $password_error_msg = "Password must be minimum of 6 characters and atleast one special character";
         $error = true;
     }
 
     if (strlen($mobile) < 10) {
-        $mobile_error = "Mobile number must be minimum of 10 characters";
+        $mobile_error_msg = "Mobile number must be minimum of 10 characters";
         $error = true;
     }
     else {
         // if mobile is already existing, then generate error respectively
     }
 
-    if ($password != $cpassword) {
-        $cpassword_error = "Password and Confirm Password doesn't match";
+    if ($cpassword != $password) {
+        $cpassword_error_msg = "Password and Confirm Password doesn't match";
         $error = true;
     }
 
     if (!$error) {
         if (mysqli_query($conn, "INSERT INTO users(`name`, `email`, `mobile`, `password`) VALUES('" . $name . "', '" . $email . "', '" . $mobile . "', '" . $password . "')")) {
-            // header("location: login.php");
+            header("location: index.php");
             exit();
-        } else {
-            echo "Error: " . $sql . "" . mysqli_error($conn);
+        } 
+        else {
+            $error_msg = "Error: " . $sql . "" . mysqli_error($conn);
         }
     }
     mysqli_close($conn);
@@ -81,23 +82,23 @@ if (isset($_POST['signup'])) {
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <div class="form-group">
                                 <label>Name</label>
-                                <input type="text" name="name" class="form-control" value="" maxlength="50" required="">
-                                <span class="text-danger"><?php if (isset($name_error)) echo $name_error; ?></span>
+                                <input type="text" name="name" class="form-control" value="" maxlength="50" required="" placeholder="enter name">
+                                <span class="text-danger"><?php if (isset($name_error_msg)) echo $name_error_msg; ?></span>
                             </div>
                             <div class="form-group ">
                                 <label>Email</label>
-                                <input type="email" name="email" class="form-control" value="" maxlength="30" required="">
-                                <span class="text-danger"><?php if (isset($email_error)) echo $email_error; ?></span>
+                                <input type="email" name="email" class="form-control" value="" maxlength="30" required="" placeholder="enter email">
+                                <span class="text-danger"><?php if (isset($email_error_msg)) echo $email_error_msg; ?></span>
                             </div>
                             <div class="form-group">
                                 <label>Mobile</label>
-                                <input type="text" name="mobile" class="form-control" value="" maxlength="12" required="">
-                                <span class="text-danger"><?php if (isset($mobile_error)) echo $mobile_error; ?></span>
+                                <input type="text" name="mobile" class="form-control" value="" maxlength="12" required="" placeholder="enter mobile">
+                                <span class="text-danger"><?php if (isset($mobile_error_msg)) echo $mobile_error_msg; ?></span>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
                                 <div class="input-group">
-                                    <input type="password" id="password" name="password" class="form-control" value="" maxlength="8" required="">
+                                    <input type="password" id="password" name="password" class="form-control" value="" required="" placeholder="enter password (one special symbol)">
                                     <button id="showPassword" class="btn btn-outline-secondary" type="button"><i class="fa fa-key" aria-hidden="true"></i></button>
                                 </div>
                                 <span class="text-danger"><?php if (isset($password_error_msg)) echo $password_error_msg; ?></span>
@@ -105,12 +106,13 @@ if (isset($_POST['signup'])) {
                             <div class="form-group">
                                 <label>Confirm Password</label>
                                 <div class="input-group">
-                                    <input type="password" id="cpassword2" name="cpassword" class="form-control" value="" maxlength="8" required="">
+                                    <input type="password" id="cpassword2" name="cpassword" class="form-control" value="" maxlength="8" required="" placeholder="confirm password">
                                     <button id="showPassword2" class="btn btn-outline-secondary" type="button"><i class="fa fa-key" aria-hidden="true"></i></button>
                                 </div>
                                 <span class="text-danger"><?php if (isset($cpassword_error_msg)) echo $cpassword_error_msg; ?></span>
                             </div>
                             <input type="submit" class="btn btn-primary my-3" name="signup" value="submit">
+                            <span class="text-danger"><?php if (isset($error_msg)) echo $error_msg; ?></span>
                             <hr>
                             <div class="text-center">
                                 <br> Already have a account?<a href="index.php" class="mx-3">Login</a>

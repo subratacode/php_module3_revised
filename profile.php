@@ -1,12 +1,13 @@
 <?php
-    session_start();
-    if(!isset($_SESSION['user_id'])) {
-        header('location:index.php');
-    }
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('location:index.php');
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +19,7 @@
     <!-- FontAwesome 5 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
 </head>
+
 <body>
     <!-- Navbar top -->
     <div class="navbar-top">
@@ -76,35 +78,39 @@
                 <i class="fa fa-pen fa-xs edit"></i>
                 <table>
                     <tbody>
+                        <?php
+                            require_once 'dbConfig.php';
+                            $sql = "SHOW COLUMNS FROM users";
+                            $result = mysqli_query($conn, $sql);
+                            // check if result > 0 
+                            while ($row = mysqli_fetch_array($result)) {
+                                echo $row['Field'] . "<br>";
+                            }
+                        ?>
                         <tr>
-                            <td>Name</td>
+                            <td>UID</td>
                             <td>:</td>
                             <td>ImDezCode</td>
                         </tr>
                         <tr>
-                            <td>Email</td>
+                            <td>Name</td>
                             <td>:</td>
                             <td>imdezcode@gmail.com</td>
                         </tr>
                         <tr>
-                            <td>Address</td>
+                            <td>Email</td>
                             <td>:</td>
                             <td>Bali, Indonesia</td>
                         </tr>
                         <tr>
-                            <td>Hobbies</td>
+                            <td>Password</td>
                             <td>:</td>
                             <td>Diving, Reading Book</td>
                         </tr>
                         <tr>
-                            <td>Job</td>
+                            <td>Mobile</td>
                             <td>:</td>
                             <td>Web Developer</td>
-                        </tr>
-                        <tr>
-                            <td>Skill</td>
-                            <td>:</td>
-                            <td>PHP, HTML, CSS, Java</td>
                         </tr>
                     </tbody>
                 </table>
@@ -150,4 +156,5 @@
     </div>
     <!-- End -->
 </body>
+
 </html>
